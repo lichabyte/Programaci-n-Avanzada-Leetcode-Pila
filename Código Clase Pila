@@ -13,3 +13,25 @@ public class Pila {
         else
             return false;
     }
+public void Push(Object dato){
+    //1. Crear el nuevo nodo
+    Nodo nuevo = new Nodo (dato);
+    //2. Vincular al tope de la pila
+    nuevo.siguiente = tope;
+    //3. Mover el tope
+    tope = nuevo;
+}
+//peek devuelve el elemento en el tope de la pila
+public Object peek (){
+    return tope.elemento;
+}
+//pop devuelve y elimina el elemento en el tope de la pila
+    public Object pop (){
+    //1. respaldar el dato
+    Object aux = tope.elemento;
+    //2. mover el tope
+    tope = tope.siguiente;
+    // 3. RETORNAR el dato
+    return aux;
+    }
+}
