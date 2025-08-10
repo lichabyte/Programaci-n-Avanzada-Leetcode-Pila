@@ -1,0 +1,15 @@
+public class Pila {
+    //atributos
+    Nodo tope;
+
+    //método
+    public Pila(){
+        tope = null;
+    }
+    //isEmpty (retorna true sí la pila está vacía o false en caso contrario)
+    public boolean isEmpty(){
+        if (tope != null)
+            return true;
+        else
+            return false;
+    }
