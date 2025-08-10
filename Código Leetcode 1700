@@ -1,0 +1,74 @@
+import java.util.LinkedList;
+import java.util.Stack;
+import java.util.Queue;
+
+public class Solution2 {
+    public static void main(String[] args) {
+
+        // Array de estudiantes (cola)
+        // 0 = quiere sándwich tipo 0
+        // 1 = quiere sándwich tipo 1
+        int[] students = {0, 1, 1, 1, 0};
+
+        // Array de sándwiches (pila)
+        // El primer elemento es el sándwich que está arriba de todo
+        int[] sandwiches = {0, 1, 1, 0, 0};
+
+        // Llamamos al método que calcula cuántos estudiantes no comerán
+        int resultado = countStudents(students, sandwiches);
+
+        // Imprimimos el resultado en consola
+        System.out.println("Estudiantes que no comieron: " + resultado);
+    }
+
+    // Método para calcular cuántos estudiantes no comen
+    public static int countStudents(int[] students, int[] sandwiches) {
+
+        // Declaramos la pila para los sándwiches
+        Stack<Integer> pila = new Stack<>();
+
+        // Declaramos la cola para los estudiantes
+        Queue<Integer> cola = new LinkedList<>();
+
+        // Agregar elementos a la pila en orden inverso
+        // Esto es porque en una pila el último que entra es el primero que sale (LIFO)
+        // Queremos que el primer sándwich del array esté en el tope de la pila
+        for (int i = sandwiches.length - 1; i >= 0; i--) {
+            pila.push(sandwiches[i]);
+        }
+
+        // Agregar elementos a la cola en orden normal (FIFO)
+        // El primero que llega es el primero que intenta comer
+        for (int j = 0; j < students.length; j++) {
+            cola.offer(students[j]);
+        }
+
+        // Variable para contar cuántas vueltas damos sin que nadie coma
+        int vueltas = 0;
+
+        // El bucle continúa mientras haya estudiantes y sándwiches
+        while (!cola.isEmpty() && !pila.isEmpty()) {
+
+            // Si el estudiante al frente de la cola quiere el sándwich del tope de la pila
+            if (cola.peek().equals(pila.peek())) {
+                // El estudiante toma el sándwich y se va
+                cola.poll(); // quitar estudiante de la cola
+                pila.pop();  // quitar sándwich de la pila
+                vueltas = 0; // reiniciamos el conteo porque alguien comió
+            } else {
+                // El estudiante no quiere ese sándwich → lo mandamos al final de la cola
+                cola.offer(cola.poll());
+                vueltas++;
+
+                // Si hemos movido a todos los estudiantes una vez sin que nadie coma
+                // significa que nadie quiere el sándwich que está arriba → se termina
+                if (vueltas == cola.size()) {
+                    break;
+                }
+            }
+        }
+
+        // Devolvemos el número de estudiantes que no comieron
+        return cola.size();
+    }
+}
